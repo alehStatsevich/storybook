@@ -1,50 +1,50 @@
 import React from "react";
-//типизация
-type ItemType ={
+
+type ItemType = {
     title: string
     value: any
 }
 export type AccordionPropsType = {
-    title: string
+    titleValue: string
     collapsed: boolean
-    onClick: any
     onChange: () => void
-    items: ItemType[]
+    items: ItemType []
+    onClick: (value: any) => void
 }
 
-function Accordion(props: AccordionPropsType) {
-    // if (props.collapsed === true) {
-    //     return <StyleTitle title={props.title}/>
-    // } else {
-        console.log("Style rendering")
-        return <div>
-            <AccordionTitle title={props.title} onClick={props.onClick}/>
-            { !props.collapsed && <AccordionBody collapsed/>}
-            {/*обходим if пишем ! прорс калапсет=== false отрисуй<StyleBody collapsed/>*/}
-            {/*можно записать так { props.collapsed ===false && <StyleBody collapsed/>}*/}
-        </div>
+export function Accordion(props: AccordionPropsType) {
+    console.log("Style rendering")
+    return <div>
 
+        <AccordionTitle title={props.titleValue}
+                        onChange={props.onChange}/>
+        {!props.collapsed && <AccordionBody items={props.items} onClick={props.onClick}/>}
+
+    </div>
 }
 
-type AccordionTitle = {
+type AccordionTitlePropsType = {
     title: string
-    onClick: () => void
+    onChange: () => void
 }
 
-function AccordionTitle(props: AccordionTitle) {
+function AccordionTitle(props: AccordionTitlePropsType) {
     console.log("AccordionTitle rendering")
-    return <h3 onClick={(e) => props.onClick()} className="StyleTitle1">-- {props.title} --</h3>;
+    return <h3 onClick={(e) => props.onChange()} className="StyleTitle1">-- {props.title} --</h3>;
 }
+
 type AccordionBodyPropsType = {
-    collapsed: boolean
+    items: ItemType []
+    onClick: (value: any) => void
 }
-function AccordionBody(props:  AccordionBodyPropsType  ) {
+
+function AccordionBody(props: AccordionBodyPropsType) {
     console.log("AccordionBody rendering")
     return <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
+        {props.items.map((i, index) => <li onClick={() => props.onClick(i.value)}
+                                           key={index}>{i}</li>)}
     </ul>
 }
+
 
 export default Accordion;
